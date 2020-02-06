@@ -1,0 +1,14 @@
+---
+title: "STA304A1"
+author: "Qizheng Wang"
+date: "2020/2/6"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Question 1
+### Question 1 (a)
+$\mu=\frac{1}{N}\sum$
