@@ -47,9 +47,57 @@ $\bar{y}$ and $s^2$ are unbiased estimators for $\mu$ nad $\sigma^2$\newline
 #### (i)
 
 ## Question 2
-### Question 2 (a)
-Student number: 1002079877
-``` {r Question 2 (a)}
-pop2<-c(1,0,0,2,0,7,9,8,7,7)
 
+### Question 2 (a)
+Student number: 1002079877.
+``` {r Question 2 a}
+pop2a<-c(1,0,0,2,0,7,9,8,7,7)
+hist(pop2a,breaks = c(0:9),freq=TRUE,xlim = c(0,9),xlab="Digits",main="Student number digit's frequency")
 ```
+
+### Question 2 (b)
+``` {r Question 2 b}
+prop2b<-mean(pop2a==1)
+```
+By the density histgram, we can see the proportion of 0's is 0.4 and the proportion of 1's is `r prop2b`.
+
+### Question 2 (c)
+``` {r Quesiton 2 c}
+sample2c<-sample(pop2,4,replace=TRUE)
+prop2c<-mean(sample2c==1)
+```
+The sample I draw is `r sample2c`.
+The proportion of 1 in sample is `r prop2c`
+
+### Question 2 (d)
+``` {r Question 2 d}
+N<-1000
+sample2d<-numeric(N)
+for (i in 1:N){
+  oneSample<-sample(pop2,4,replace=TRUE)
+  prop2d<-mean(oneSample==1)
+  sample2d[i]<-prop2d
+}
+hist(sample2d,xlab = "proportion of 1 in sample",main="Histogram of proportion of 1 in randomized 1000 sample sample for 2(d)")
+```
+
+### Question 2 (e)
+``` {r Quesiton 2 c}
+sample2e<-sample(pop2,4,replace=FALSE)
+prop2e<-mean(sample2e==1)
+```
+The sample I draw is `r sample2e`.
+The proportion of 1 in sample is `r prop2e`
+
+### Question 2 (f)
+``` {r Question 2 f}
+N<-1000
+sample2f<-numeric(N)
+for (i in 1:N){
+  oneSample<-sample(pop2,4,replace=FALSE)
+  prop2f<-mean(oneSample==1)
+  sample2f[i]<-prop2f
+}
+hist(sample2d,xlab = "proportion of 1 in sample",main="Histogram of proportion of 1 in randomized 1000 sample for 2(f)")
+```
+
