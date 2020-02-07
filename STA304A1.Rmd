@@ -11,4 +11,19 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Question 1
 ### Question 1 (a)
-$\mu=\frac{1}{N}\sum$
+$$\mu=\frac{1}{N}\sum_{i=1}^{N}y(e_i)=\frac{1}{4}*(3+1+0+5)=2.25$$
+$$\sigma_y^2=\frac{1}{4}*((4-2.25)^2+(3-2.25)^2+(0-2.25^2)+(5-2.25)^2)=\frac{65}{16}$$
+
+### Question 1 (b)
+#### (i) 
+The number of possible SRSs of size n=2 is $\binom{4}{2}=6$\newline
+Possible sample is 12,13,14,23,24,34.\newline
+For each sample,the probability that being selected is $\frac{1}{6}$.
+#### (ii)
+For $y_1=3,y_2=1$:$\bar{y}=\frac{1}{2}*(3+1)=2$,$s^2=\frac{1}{2-1}((3-2)^2+(1-2)^2)=2$\newline
+For $y_1=3,y_3=0$:$\bar{y}=\frac{1}{2}*(3+0)=1.5$,$s^2=\frac{1}{2-1}((3-1.5)^2+(0-1.5)^2)=4.5$\newline
+For $y_1=3,y_4=5$:$\bar{y}=\frac{1}{2}*(3+5)=4$,$s^2=\frac{1}{2-1}((3-4)^2+(5-4)^2)=2$\newline
+For $y_2=1,y_3=0$:$\bar{y}=\frac{1}{2}*(1+0)=0.5$,$s^2=\frac{1}{2-1}((1-0.5)^2+(0-0.5)^2)=0.5$\newline
+For $y_2=1,y_4=5$:$\bar{y}=\frac{1}{2}*(1+5)=3$,$s^2=\frac{1}{2-1}((1-3)^2+(5-3)^2)=8$\newline
+For $y_3=0,y_4=5$:$\bar{y}=\frac{1}{2}*(0+5)=2.5$,$s^2=\frac{1}{2-1}((0-2.5)^2+(5-2.5)^2)=12.5$\newline
+#### (iii)
