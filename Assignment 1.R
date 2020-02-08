@@ -16,7 +16,6 @@ selectPrice <- cbind(selectPrice,spotValue)
 counter <- data.frame(100,99,98,95,94,93,92,91,88,87)
 
 
-
 ## calculate dirty price in first bond
 for (days in 1:10) {
   countDown <- (236-counter[days])
@@ -389,4 +388,3 @@ logEigen<-eigen(Xfinal)$values
 logVector<-eigen(Xfinal)$vectors
 forwardEigen<-eigen(Yfinal)$values
 forwardVector<-eigen(Yfinal)$vectors
-
