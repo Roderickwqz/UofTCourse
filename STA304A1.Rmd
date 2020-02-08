@@ -101,3 +101,33 @@ for (i in 1:N){
 hist(sample2d,xlab = "proportion of 1 in sample",main="Histogram of proportion of 1 in randomized 1000 sample for 2(f)")
 ```
 
+## Question 3
+### Question 3a
+The survey is a national servey conducted online, between June 11 and 17 2019. It is asking about participants happiness index and the influence factor about their happiness level.
+\newline
+Question of interest: Find out the general happiness level of Canadians and the factor most influencing people's happiness.
+
+### 3b
+Target population: Canadians across the country.
+\newline Sampled population: Canadians who conducted the online survey between June 11 nad 17 2019.
+\newline Sampling frame:
+List of Canadianas based on their registered cell phone number.
+\newline Sampling unit: Any Canadian individuals.
+\newline Observatioin unit: Any Canadian individuals.
+
+### 3c
+More Canadians report being happier after age 55.\newline
+Participants with higher incomes were also more likely to have a high happiness score.\newline
+Participants in the East Coast reported the highest happiness level, and participants in Ontario the least.
+
+### 3d
+1.Inadequate frame: The sampling design excludes people who do not use internet, like elders.\newline
+Possible way of alleviating error: For each participants conducted the survey, recommand them to enroll their elders at home to conduct the survey as well.\newline
+2.Response error: When participants intentionally or accidentally provides inaccurate responses.\newline
+Possible way of alleviating error: ask the happiness level for particular area, ex.work life, romantic life..
+
+## Question 4
+### Question 4 a
+
+
+
