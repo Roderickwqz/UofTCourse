@@ -1,0 +1,116 @@
+---
+title: "STA305A1"
+author: "Qizheng Wang"
+date: "2/4/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## STA305 Assignment 1, student
+### Student number 1002079877
+
+## Question A
+``` {r question A}
+set.seed(9877)
+Number<-c(1:8)
+S<-round(rnorm(8,mean=5,sd=2),3)
+T<-round(rnorm(8,mean=7,sd=2),3)
+diff<-S-T
+compD<-data.frame(Number,S,T,diff)
+
+plot(compD$Number,compD$S,col="red",cex=1.2,xlab="Number of Treatment",ylab="Values")
+points(compD$Number,compD$T,col="blue",cex=1.2)
+legend("bottomleft",legend=c("S","T"),text.col=c("red","blue"),cex = 0.7)
+
+compD
+```
+
+### (1)-(4)
+The seed is 9877.\newline
+The first treatment S is `r S`.\newline
+The second treatment T is `r T`.\newline
+The oberservation is compD.
+
+
+## Question B
+
+### Question B(i)
+```{r Question B(i)}
+## Randomized pair design
+meandiff<-mean(diff)
+ST<-c(S,T)
+N <- 2^8
+res <- numeric(N)
+LR=list(c(-1,1))
+trtassign<-expand.grid(rep(LR,8))
+for(i in 1:N)
+{
+  res[i]<-mean(as.numeric(trtassign[i,])*diff)
+}
+summary(res)
+
+##Completely randomized design
+comp<-c(S,T)
+N <- choose(16,8)
+res2 <- numeric(N)
+observed=mean(S)-mean(T)
+index <-combn(1:16,8)
+for (i in 1:N){
+  res2[i] <- mean(comp[index[,i]])-mean(comp[-index[,i]])
+}
+
+```
+The first design is the randomized pair design.\newline
+There are $2^8$=`r 2^8` values in this distribution, and the probability of the observed treatment allocation is $\frac{1}{2^8}$=`r 1/(2^8)`.\newline
+The second design is the Completely randomized design.\newline
+There are 	$\binom{16}{8}$=`r choose(16,8)` values in this distribution, and the probability of the observed treatment allocation is $\frac{1}{\binom{16}{8}}$=`r 1/choose(16,8)`.\newline
+
+### Question B(ii)
+``` {r Question B(ii)}
+## Randomized paired design
+hist(res,xlab='Difference in mean',ylab="Number",main="Randomization Distribution for Paired Comparison")
+abline(v = meandiff, col = 'red')
+abline(v = -meandiff, col = 'red')
+tbar<-mean(res)
+p_val<-sum(abs(res-tbar)>=abs(meandiff-tbar))/N
+round(p_val,4)
+
+## Completely randomized design
+hist(res2,xlab = 'Difference in main', main = 'Randomization Distribution for Completely Randomized Design')
+abline(v=observed, col='blue') 
+abline(v=-observed, col='blue') 
+tbar2<-mean(res2)
+p_val2<-sum(abs(res2-tbar2)>=abs(observed-tbar2))/N
+round(p_val2,4)
+```
+By doing a two-sided randomization test, the p-value for the randomized paired design is `r p_val2`. The significance level I choose will be 0.05 based on the rule of thumb. Thus `r p_val2` is smaller than 0.05, thus reject the null hypothesis, meaning there are difference in means for two treatments.
+
+## Question C
+``` {r Question C}
+#paired t test
+t.test(S,T, paired=TRUE)
+#two sample t test
+t.test(S,T)
+```
+
+### Question C(i)
+For the completely randomdized design, because the population distribution is normal, thus an appropriate test will be two sample t-test.\newline
+$H_0$: the mean of two sample is equal to zero.\newline
+$H_a$: true difference in means is not equal to 0.\newline
+P-value at here is `r t.test(S,T)$p.value`. The p-value heare means under the assumption that the population means are equal,the probability that hte difference between the sample means is at least as large as what has been observed.
+\newline
+\newline
+For the paried design, paired t test should be conducted.\newline
+$H_0$: the mean of two sample is equal to zero.\newline
+$H_a$: true difference in means is not equal to 0.\newline
+P-value at here is `r t.test(S,T, paired=TRUE)$p.value`.\newline
+
+### Question C(ii)
+Because the distribution is normal and two samples are independent, the normality and independenty are satisfied for the two-sample t test.
+But since the parameters are unknown, the variance may not be the same.
+
+### Quesetion C(iii)
+The two-sided randomization test has a p-value of `r p_val2`, while the p-value of t-test is `r t.test(S,T)$p.value`, it's almost identical, and they are all smaller than $\alpha=0.05$, thus the results are consistent.

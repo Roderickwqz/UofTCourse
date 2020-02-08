@@ -1,0 +1,24 @@
+---
+title: "STA304A1Q4"
+author: "Qizheng Wang"
+date: "2/7/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Question 4
+### Question 4 a
+Objectvie: Find out the preference of brand of labtop used by college students.\newline
+Traget population is all the college students in Canada.\newline
+Sampling frame: students list by university e-mail address.\newline
+Design: draw samples by stratified sampling. First divide the popultion by states to subpopulations, then elect random 3-5 University in each state and contact them for the survery, ask them to provide willing student's e-mail address. Last, send questionaire e-mail to all the provided e-mail.\newline
+
+### Quesetion 4 b
+1.Voluntary response bias: Since the participants are voluntary samples, the one with less or no knowledge about laptop brands may undermine the survery, creating bias. ex.students only used one brand may have no idea what other brands perform.
+2.Feeling: Students may influenced by the brand culture and be fond of it, but not by the laptop performance.
+3.Non-response bias: The participants may not be answer part of the questionnaires. ex.The reason of perference.\newline
+![Happiess survey by Global news](HappinessSurvey)
+

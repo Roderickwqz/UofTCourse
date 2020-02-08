@@ -1,0 +1,90 @@
+---
+title: "STA305A1"
+author: "Qizheng Wang"
+date: "2/4/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## STA305 Assignment 1, student
+### Studetn number 1002079877
+
+## Question A
+``` {r question A}
+set.seed(9877)
+Number<-c(1:8)
+TreatS<-round(rnorm(8,mean=5,sd=2),3)
+TreatT<-round(rnorm(8,mean=7,sd=2),3)
+diff<-TreatS-TreatT
+compD<-data.frame(Number,TreatS,TreatT,diff)
+
+plot(compD$Number,compD$TreatS,col="red",cex=1.2,xlab="Number of Treatment",ylab="Values")
+points(compD$Number,compD$TreatT,col="blue",cex=1.2)
+legend("bottomleft",legend=c("S","T"),text.col=c("red","blue"),cex = 0.7)
+
+compD
+```
+### (1)-(4)
+The seed is 9877.\newline
+The first treatment S is `r TreatS`.\newline
+The second treatment T is `r TreatT`.\newline
+The oberservation is compD.
+
+## Question B
+```{r Question }
+## Paried distribution
+ST<-c(TreatS,TreatT)
+N <- 2^8
+res <- numeric(N)
+LR=list(c(-1,1))
+trtassign<-expand.grid(rep(LR,8))
+for(i in 1:N)
+{
+  res[i]<-mean(as.numeric(trtassign[i,])*compD$diff)
+}
+
+## Two sample randomization
+N2 <- choose(16,8)
+res2 <- numeric(N2)
+observed=mean(TreatS)-mean(TreatT)
+index <-combn(1:16,8)
+for (i in 1:N)
+{res[i] <- mean(res2[index[,i]])-mean(res2[-index[,i]])}
+
+```
+
+### Quetion B(i)
+The number of value this distribution contain is $\binom{16}{8}$=`r choose(16,8)`.\newline
+res contains all the value in this randomization distribution.\newline
+The probability of the observed treatment allocation is 
+
+### Question B(ii)
+```{r Question 2ii}
+## Paired graph
+hist(res,xlab='Difference in mean',ylab="Number",main="Randomization Distribution for Paired Comparison")
+meandiff=mean(compD$diff)
+abline(v = meandiff, col = 'red')
+abline(v = -meandiff, col = 'red')
+tbar<-mean(res)
+p_val<-sum(abs(res-tbar)>=abs(meandiff-tbar))/N
+round(p_val,4)
+
+## Two sample graph
+hist(res,xlab = "Difference in main", main = "Randomization Distribution")
+abline(v=observed, col='blue') 
+abline(v=-observed, col='blue') 
+tbar2<-mean(res2)
+p_val2<-sum(abs(res2-tbar2)>=abs(observed-tbar2))/N
+round(p_val,4)
+```
+
+### Question C
+``` {r Question 2ii}
+#paired t test
+t.test(TreatS,TreatT, paired=TRUE)
+#two sample t test
+t.test(TreatS,TreatT)
+```

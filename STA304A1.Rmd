@@ -17,8 +17,9 @@ $\sigma_y^2=\frac{1}{4}*((4-2.25)^2+(3-2.25)^2+(0-2.25^2)+(5-2.25)^2)=\frac{65}{
 ### Question 1 (b)
 #### (i) 
 The number of possible SRSs of size n=2 is $\binom{4}{2}=6$\newline
-Possible sample is 12,13,14,23,24,34.\newline
+Possible sample is 12,13,14,23,24,34(by label).\newline
 For each sample,the probability that being selected is $\frac{1}{6}$.
+
 #### (ii)
 For $y_1=3,y_2=1$:$\bar{y}=\frac{1}{2}*(3+1)=2$,$s^2=\frac{1}{2-1}((3-2)^2+(1-2)^2)=2$\newline
 For $y_1=3,y_3=0$:$\bar{y}=\frac{1}{2}*(3+0)=1.5$,$s^2=\frac{1}{2-1}((3-1.5)^2+(0-1.5)^2)=4.5$\newline
@@ -26,118 +27,60 @@ For $y_1=3,y_4=5$:$\bar{y}=\frac{1}{2}*(3+5)=4$,$s^2=\frac{1}{2-1}((3-4)^2+(5-4)
 For $y_2=1,y_3=0$:$\bar{y}=\frac{1}{2}*(1+0)=0.5$,$s^2=\frac{1}{2-1}((1-0.5)^2+(0-0.5)^2)=0.5$\newline
 For $y_2=1,y_4=5$:$\bar{y}=\frac{1}{2}*(1+5)=3$,$s^2=\frac{1}{2-1}((1-3)^2+(5-3)^2)=8$\newline
 For $y_3=0,y_4=5$:$\bar{y}=\frac{1}{2}*(0+5)=2.5$,$s^2=\frac{1}{2-1}((0-2.5)^2+(5-2.5)^2)=12.5$\newline
+
+
 #### (iii)
 $E(\bar{y})=\frac{2+1.5+4+0.5+3+2.5}{6}=2.25$\newline
-$S^2=\frac{1}{4-1}[(3-2.25)^2+(1-2.25)^2+(0-2.25)^2+(5-2.25)^2+(5-2.25)^2]=\frac{14.75}{3}=4.916667$
-$V(\bar{y}=E(\bar{y}-\bar{Y}^2)=\frac{(N-n)*S^2}{nN}=\frac{(4-2)*4.916667}{2*4}=1.229167$\newline
-$\bar{Y}=\frac{3+1+0+5}{4}=\frac{9}{4}=2.25$\newline
-$E(\bar{y})=\bar{Y}$\newline
+$Var(\bar{y})=\frac{1}{6^2}*(2+4.5+2+0.5+8+12.5)=0.82$\newline
+$\mu=\frac{3+1+0+5}{4}=\frac{9}{4}=2.25$\newline
+$E(\bar{y})=\mu$\newline
 Thus $\bar{y}$ is unbiased estimator of $\bar{Y}$, \newline
 $Bias(\bar{y})=0$\newline
-$MSE(\bar{y})=V(\bar{y})+[Bias(\bar{y})]^2=V(\bar{y})$
+$MSE(\bar{y})=V(\bar{y})+[Bias(\bar{y})]^2=V(\bar{y})=0.82$
+
 #### (iv)
 $E(s^2)=\frac{2+4.5+2+0.5+8+12.5}{6}=\frac{29.5}{6}=4.916667$\newline
-##############################\newline
-$V(s^2)=E(s^2-S^2)=E[\frac{1}{n}\sum(s^2-S^2)]$\newline
-##############################\newline
+$V(s^2)=\frac{(2-4.92)^2+(4.5-4.92)^2+(2-4.92)^2+(0.5-4.92)^2+(8-4.92)^2+(12.5-4.92)^2}{6}=17.23$\newline
+
 #### (v)
-$\bar{y}$ and $s^2$ are unbiased estimators for $\mu$ nad $\sigma^2$\newline
+$\sigma^2=\frac{\sum_{i=1}^{N}(y_i-\mu)^2}{N}=\frac{(2-2.25)^2+(1.5-2.25)^2+(4-2.25)^2+(0.5-2.25)^2+(3-2.25)^2+(2.5-2.25)^2}{6}=3.48$\newline
+Thus $\bar{y}$ is unbiased estimators for $\mu$, but $s^2$ is not unbiased for $\sigma^2$\newline
 
 ### Question 1(c)
 #### (i)
+The total number of possible SRSs of size n=2 is 16
+The possible sample by label is 11,12,13,14,22,23,24,33,34,44.
+Probability for 11,22,33,44 is $\frac{1}{16}$,probability for 12,13,14,23,24,34 is $\frac{1}{8}$
 
-## Question 2
+#### (ii)
+For $y_1=3,y_1=3$:$\bar{y}=\frac{1}{2}*(3+3)=3$,$s^2=\frac{1}{3-3}((3-3)^2+(3-3)^2)=0$\newline
+For $y_1=3,y_2=1$:$\bar{y}=\frac{1}{2}*(3+1)=2$,$s^2=\frac{1}{2-1}((3-2)^2+(1-2)^2)=2$\newline
+For $y_1=3,y_3=0$:$\bar{y}=\frac{1}{2}*(3+0)=1.5$,$s^2=\frac{1}{2-1}((3-1.5)^2+(0-1.5)^2)=4.5$\newline
+For $y_1=3,y_4=5$:$\bar{y}=\frac{1}{2}*(3+5)=4$,$s^2=\frac{1}{2-1}((3-4)^2+(5-4)^2)=2$\newline
+Fpr $y_2=1,y_2=1$:$\bar{y}=\frac{1}{2}*(1+1)=1$,$s^2=\frac{1}{2-1}((1-1)^2+(1-1)^2)=0$\newline
+For $y_2=1,y_3=0$:$\bar{y}=\frac{1}{2}*(1+0)=0.5$,$s^2=\frac{1}{2-1}((1-0.5)^2+(0-0.5)^2)=0.5$\newline
+For $y_2=1,y_4=5$:$\bar{y}=\frac{1}{2}*(1+5)=3$,$s^2=\frac{1}{2-1}((1-3)^2+(5-3)^2)=8$\newline
+For $y_3=0,y_3=0$:$\bar{y}=\frac{1}{2}*(0+0)=0$,$s^2=\frac{1}{2-1}((0-0)^2+(0-0)^2)=0$\newline
+For $y_3=0,y_4=5$:$\bar{y}=\frac{1}{2}*(0+5)=2.5$,$s^2=\frac{1}{2-1}((0-2.5)^2+(5-2.5)^2)=12.5$\newline
+For $y_4=5,y_4=5$:$\bar{y}=\frac{1}{2}*(5+5)=5$,$s^2=\frac{1}{2-1}((5-5)^2+(5-5)^2)=0$\newline
 
-### Question 2 (a)
-Student number: 1002079877.
-``` {r Question 2 a}
-pop2a<-c(1,0,0,2,0,7,9,8,7,7)
-hist(pop2a,breaks = c(0:9),freq=TRUE,xlim = c(0,9),xlab="Digits",main="Student number digit's frequency")
-```
+### (iii)
+$E(\bar{y})=\frac{2*2+1.5*2+4*2+0.5*2+3*2+2.5*2+0*4}{16}=1.6875$\newline
+$\mu=\frac{3+1+0+5}{4}=\frac{9}{4}=2.25$\newline
+$E(\bar{y})=\mu+Bias(\bar{y})$=2.25-0.5625\newline
+Thus $Bias(\bar{y})=-0.5625$\newline
+$Var(\bar{y})=\frac{1}{16^2}*(0*4+2+2+4.5+4.5+2+2+0.5+0.5+8+8+12.5+12.5)=0.2305$\newline
+$MSE(\bar{y})=V(\bar{y})+[Bias(\bar{y})]^2=0.2305-0.5625=-0.332$
 
-### Question 2 (b)
-``` {r Question 2 b}
-prop2b<-mean(pop2a==1)
-```
-By the density histgram, we can see the proportion of 0's is 0.4 and the proportion of 1's is `r prop2b`.
+#### (iv)
+$E(s^2)=\frac{0*4+2+2+4.5+4.5+2+2+0.5+0.5+8+8+12.5+12.5}{16}=\frac{59}{16}=3.6875$\newline
+$V(s^2)=\frac{(0-3.7)^2*4+(2-3.7)^2*4+(4.5-3.7)^2*2+(0.5-3.7)^2*2+(8-3.7)^2*2+(12.5-3.7)^2*2}{16}=14.93$\newline
 
-### Question 2 (c)
-``` {r Quesiton 2 c}
-sample2c<-sample(pop2,4,replace=TRUE)
-prop2c<-mean(sample2c==1)
-```
-The sample I draw is `r sample2c`.
-The proportion of 1 in sample is `r prop2c`
+#### (v)
+$\sigma^2=\frac{\sum_{i=1}^{N}(y_i-\mu)^2}{N}=\frac{(0-2.25)^2*3+(2-2.25)^2*2+(1.5-2.25)^2*2+(4-2.25)^2*2+(0.5-2.25)^2*2+(3-2.25)^2*2+(2.5-2.25)^2*2}{16}=1.3554$\newline
+Thus $Bias(\bar{y})=-0.5625$\newline
+Thus $\bar{y}$ is biased estimator of $\mu$ \newline
+And $s^2$ is not unbiased for $\sigma^2$\newline
 
-### Question 2 (d)
-``` {r Question 2 d}
-N<-1000
-sample2d<-numeric(N)
-for (i in 1:N){
-  oneSample<-sample(pop2,4,replace=TRUE)
-  prop2d<-mean(oneSample==1)
-  sample2d[i]<-prop2d
-}
-hist(sample2d,xlab = "proportion of 1 in sample",main="Histogram of proportion of 1 in randomized 1000 sample sample for 2(d)")
-```
-
-### Question 2 (e)
-``` {r Quesiton 2 c}
-sample2e<-sample(pop2,4,replace=FALSE)
-prop2e<-mean(sample2e==1)
-```
-The sample I draw is `r sample2e`.
-The proportion of 1 in sample is `r prop2e`
-
-### Question 2 (f)
-``` {r Question 2 f}
-N<-1000
-sample2f<-numeric(N)
-for (i in 1:N){
-  oneSample<-sample(pop2,4,replace=FALSE)
-  prop2f<-mean(oneSample==1)
-  sample2f[i]<-prop2f
-}
-hist(sample2d,xlab = "proportion of 1 in sample",main="Histogram of proportion of 1 in randomized 1000 sample for 2(f)")
-```
-
-## Question 3
-### Question 3a
-The survey is a national servey conducted online, between June 11 and 17 2019. It is asking about participants happiness index and the influence factor about their happiness level.
-\newline
-Question of interest: Find out the general happiness level of Canadians and the factor most influencing people's happiness.
-
-### 3b
-Target population: Canadians across the country.
-\newline Sampled population: Canadians who conducted the online survey between June 11 nad 17 2019.
-\newline Sampling frame:
-List of Canadianas based on their registered cell phone number.
-\newline Sampling unit: Any Canadian individuals.
-\newline Observatioin unit: Any Canadian individuals.
-
-### 3c
-More Canadians report being happier after age 55.\newline
-Participants with higher incomes were also more likely to have a high happiness score.\newline
-Participants in the East Coast reported the highest happiness level, and participants in Ontario the least.
-
-### 3d
-1.Inadequate frame: The sampling design excludes people who do not use internet, like elders.\newline
-Possible way of alleviating error: For each participants conducted the survey, recommand them to enroll their elders at home to conduct the survey as well.\newline
-2.Response error: When participants intentionally or accidentally provides inaccurate responses.\newline
-Possible way of alleviating error: ask the happiness level for particular area, ex.work life, romantic life..
-
-## Question 4
-### Question 4 a
-Objectvie: Find out the preference of brand of labtop used by college students.\newline
-Traget population is all the college students in Canada.\newline
-Sampling frame: students list by university e-mail address.\newline
-Design: draw samples by stratified sampling. First divide the popultion by states to subpopulations, then elect random 3-5 University in each state and contact them for the survery, ask them to provide willing student's e-mail address. Last, send questionaire e-mail to all the provided e-mail.\newline
-
-### Quesetion 4 b
-1.Voluntary response bias: Since the participants are voluntary samples, the one with less or no knowledge about laptop brands may undermine the survery, creating bias. ex.students only used one brand may have no idea what other brands perform.
-2.Feeling: Students may influenced by the brand culture and be fond of it, but not by the laptop performance.
-3.Non-response bias: The participants may not be answer part of the questionnaires. ex.The reason of perference.
-![Happiess survey by Global news](HappinessSurvey)
-
-
-
+### (d)
+Sampling plan in b is better, because it is the unbiased estimator.
