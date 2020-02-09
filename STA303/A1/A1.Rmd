@@ -1,0 +1,186 @@
+---
+title: "Assignemnt 1"
+author: "Qizheng Wang"
+date: "1/26/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Question 1
+
+### Question 1a
+
+Equation for question of interest:
+  $seasonNumber = \beta_1*I_1+\beta_2*I_2+\beta_3*I_3+\epsilon_i$
+Anoava Assumptions:
+  1. Errors are independent 
+  2. Erorrs are normoally distributed
+  3. Constant variance
+
+### Question 1b
+
+Null hypotheses: $\mu_1=\mu_2=\mu_3$
+Alternative hypotheses: $\exists i\neq j, s.t\, \mu_i \neq \mu_j$
+where $\mu_1$ is the mean of season_rating when 1990s, $\mu_2$ is the mean of season_rating when 2000s, and $\mu_3$ is the mean of season_rating when 2010s
+
+### Question 1c
+
+```{r question 1c}
+
+crime_show_data <- readRDS("crime_show_ratings.RDS")
+
+crime_show_data %>% 
+  ggplot(aes(x = decade, y = season_rating)) + geom_boxplot() + 
+  ggtitle("Boxplots of average rating by decade for crime TV shows")
+
+crime_show_data %>% ggplot(aes(x = season_rating)) + geom_histogram(bins=20) + facet_wrap(~decade) + ggtitle("Histograms of average rating by decade for crime TV shows")
+  
+```
+
+I prefer the Boxplot, becasue it's easier to compare the mean.
+\textcolor{red}{How to improve: }
+
+Based on the plots, I think there is a significance difference between the means. The means are gradually increasing over the decades.
+
+### Question 1d
+
+``` {r question 1d}
+anova1d <- aov(season_rating~decade, data=crime_show_data)
+
+summary(anova1d)
+```
+Based on the P-value = 0.238, $P-value \leq 0.05$, thus consider the result significant. We reject the null hypotheses, and there is evidence that the means of season rating differs by decades.
+
+### Question 1e
+
+``` {r question 1e}
+
+plot(anova1d, 1) 
+plot(anova1d, 2)
+
+crime_show_data %>% group_by(decade) %>% summarise(var_rating = sd(season_rating)^2)
+
+0.4804055/0.2033781
+```
+Residuals vs Fitted plot does not have obvious pattern, thus the assumption for constant variance is satisfied. 
+
+Also, by rule of thumb: 
+  $s_{max}^2/s_{min}^2=0.4804055/0.2033781=2.36213\leq 3$
+Thus the assumption of constant variance is probably satisfied.
+
+The Normal Q-Q plot checks the normality. The plot forms nearly a straight line, thus the assumption of normality is satisfied.
+
+### Question 1f
+
+``` {r question 1f}
+
+lm1f <- lm(season_rating~decade, data=crime_show_data)
+
+summary(lm1f)
+
+7.9222+0.1368
+7.9222+0.1938
+
+```
+
+Interpret the coeﬀicients from this linear model in terms of the mean season ratings for each de
+linear model:
+
+Since there are no decade1990, thus decade1990 is the reference group, which means $\bar{\mu}_{1990}=7.9222$.
+
+The second coefficient $\beta_{1}=0.1368$ means $\bar{\mu}_{2000}-\bar{\mu}_{1990}$, thus $\bar{\mu}_{2000}=\bar{\mu}_{1990}+0.1368=7.9222+0.1368=8.059$
+
+The third coefficient $\beta_{2}=0.1938$ means $\bar{\mu}_{2010}-\bar{\mu}_{1990}$, thus $\bar{\mu}_{2010}=\bar{\mu}_{1990}+0.1928=8.116$
+
+
+## Question 2
+```{r setup question 2}
+smokeFile = 'smokeDownload.RData' 
+if(!file.exists(smokeFile)){ 
+  download.file(  'http://pbrown.ca/teaching/303/data/smoke.RData', smokeFile) } 
+(load(smokeFile))
+
+smokeFormats[ 
+  smokeFormats[,'colName'] == 'chewing_tobacco_snuff_or', 
+  c('colName','label')]
+
+smokeSub = smoke[which(smoke$Age > 10 & !is.na(smoke$Race)), ] 
+smokeSub$ageC = smokeSub$Age - 16 
+smokeModel = glm(chewing_tobacco_snuff_or ~ ageC + RuralUrban + Race + Sex, data=smokeSub, family=binomial(link='logit'))
+
+knitr::kable(summary(smokeModel)$coef, digits=3)
+
+logOddsMat = cbind(est=smokeModel$coef, confint(smokeModel, level=0.99)) 
+
+oddsMat = exp(logOddsMat)
+oddsMat[1,] = oddsMat[1,] / (1+oddsMat[1,])
+rownames(oddsMat)[1] = 'Baseline prob' 
+knitr::kable(oddsMat, digits=3)
+```
+
+### Question 2a
+
+$log\frac{\mu_i}{1-\mu_i}=X_i\beta$
+Where $X_i$ represents the age parameter, the rural or urban factor, and dummy variables for races.
+
+### Question 2b
+
+Baselin pro in the table is exp(Intercept) when $X_1,X_2...X_n=0$ which implies age=16, white race, M, lives in Urban area.
+
+
+
+### Question 2c
+```{r question 2c set up}
+newData = data.frame(Sex = rep(c('M','F'), c(3,2)), 
+                     Race = c('white','white','hispanic','black','asian'), 
+                     ageC = 0, RuralUrban = rep(c('Rural','Urban'), c(1,4))) 
+smokePred = as.data.frame(predict(smokeModel, newData, se.fit=TRUE, type='link'))[,1:2] 
+smokePred$lower = smokePred$fit - 3*smokePred$se.fit 
+smokePred$upper = smokePred$fit + 3*smokePred$se.fit 
+newData
+smokePred
+expSmokePred = exp(smokePred[,c('fit','lower','upper')]) 
+
+knitr::kable(cbind(newData[,-3],1000*expSmokePred/(1+expSmokePred)), digits=1)
+```
+Based on the fit , lower and upper, White who lives in Rural has the greatest interval of probabilities.
+Female minorites fit's value are 2.3+2.4=4.7, which divided by 1000 is smaller than the 0.5%. Thus it is reasonable certainty that less than half of one percent of ethnic-minority urban women and girls chew tabacco.
+
+## Question 3
+``` {r set up question 3}
+fijiFile = 'fijiDownload.RData'
+if(!file.exists(fijiFile)){
+download.file('http://pbrown.ca/teaching/303/data/fiji.RData',fijiFile)}
+(load(fijiFile))
+
+fijiSub = fiji[fiji$monthsSinceM > 0 & !is.na(fiji$literacy),]
+fijiSub$logYears = log(fijiSub$monthsSinceM/12)
+fijiSub$ageMarried = relevel(fijiSub$ageMarried, '15to18')
+fijiSub$urban = relevel(fijiSub$residence, 'rural')
+fijiRes = glm(children ~ offset(logYears) + ageMarried + ethnicity + literacy + urban, family=poisson(link=log), data=fijiSub)
+logRateMat = cbind(est=fijiRes$coef, confint(fijiRes, level=0.99))
+
+knitr::kable(cbind(summary(fijiRes)$coef,exp(logRateMat)),digits=3)
+
+fijiSub$marriedEarly = fijiSub$ageMarried == '0to15'
+fijiRes2 = glm(children ~ offset(logYears) + marriedEarly + ethnicity + urban,family=poisson(link=log), data=fijiSub)
+logRateMat2 = cbind(est=fijiRes2$coef, confint(fijiRes2, level=0.99))
+
+knitr::kable(cbind(summary(fijiRes2)$coef,exp(logRateMat2)),digits=3)
+
+lmtest::lrtest(fijiRes2, fijiRes)
+```
+### Question 3a
+The model is $log(children)=log(Years)+X_i\beta$
+Where $X_i\beta$ is indicator agedMarried, ethnicity, literacy, urban.
+
+### Question 3b
+Yes, it is comparing nested models.
+Constraints: $\beta_{literacy}=0$, ageMarried="0to15"
+
+### Question 3c
+By comparing the est col of two models, we can see that the race est and urban est in the fijiRes2 model has slightly increase, while these columns represent the situation when other $\beta=0$, meaning improving education and delaying marriage will result in having fewer children.

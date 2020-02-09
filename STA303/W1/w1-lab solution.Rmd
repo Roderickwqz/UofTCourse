@@ -1,0 +1,308 @@
+---
+title: "STA303 Week 1 Lab"
+author: "Sample Solutions"
+output:
+  pdf_document: default
+  linkcolor: blue
+  highlight: github
+---
+
+# Getting Started
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter* (Mac) or *Ctrl+Shift+Enter*. 
+
+```{r}
+plot(cars)
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
+## Markdown and R Markdown
+
+Markdown is a document processor, newer and simpler than LaTeX. It is a lightweight markup language with plain text formatting syntax (i.e. you don't have to click lots of formatting options like in Word, you just write symbols). A potential issue is that it can be hard to debug errors in your .md file.
+
+R Markdown lets you integrate R code and Markdown to create reports with commentary, code, outputs and graphics all in one place with no need to copy and paste things in to a Word doc.
+
+## Making a .pdf
+
+When you press *Knit* a .pdf report is written When you do assignments that is what you will want to submit along with your .Rmd file. You may need to install [TinyTeX](https://yihui.org/tinytex/) first by running the code below:
+```{r, eval = FALSE}
+install.packages('tinytex')
+tinytex::install_tinytex()
+```
+
+Close and reopen RStudio after running this code.
+
+HTML files are also acceptable if you can't get a TeX installation working on your machine. You can then open the HTML file in a browser and print to PDF.
+
+## A few R Markdown tips
+
+1. There is a small button at the top left of your source area of R Studio that when pressed will show an outline of the document, based on headings in the file. A heading has the hash sign (you might call it a number sign) in front of it. One hash sign is the biggest heading, followed by two hash, and three hash.
+2. A range of keyboard shortcuts can be found [here](https://support.rstudio.com/hc/en-us/articles/200711853-Keyboard-Shortcuts).
+3. On the top menu bar, go to Help > Cheatsheets > R Markdown Cheat Sheet to open the main R Markdown cheatsheet.
+4. On the top menu bar, go to Help > Markdown Quick Reference to open the *Markdown Quick Reference* in your help pane.
+5. Cheatsheets for dplyr, ggplot2 and R Markdown are available from our [Course Tools page on Piazza](https://q.utoronto.ca/courses/139220/pages/course-tools-piazza-r-and-rstudio).
+
+\newpage 
+
+# Code from the lecture
+
+First you will load the packages that we are using today.
+There is a link at the end of the Notebook to some more tasks to learn how to use dplyr and pipes. 
+```{r, setup, include=FALSE}
+# This code checks if you have the packages installed and if not installs them for you
+list.of.packages <- c("tidyverse", "lubridate")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+
+# tidyverse loads other useful packages
+# most importantly for today ggplot2 for plots and dplyr for transforming data
+library(tidyverse) 
+
+# lubridate makes it easy to work with dates
+library(lubridate) 
+```
+
+## Read in TV data
+
+- `read_csv` is a function in the readr package (part of the tidyverse).
+- `glimpse` is a function in the tibble package (part of the tidyverse).
+
+```{r, getdata}
+url = paste0("https://raw.githubusercontent.com/TheEconomist/graphic-detail-data/",
+             "master/data/2018-11-24_tv-ratings/IMDb_Economist_tv_ratings.csv")
+
+tv_data <- read_csv(url)
+
+head(tv_data, n = 5)
+
+glimpse(tv_data)
+
+```
+
+### TASK 1
+1. How many observations are in our dataset?
+  *2,266 (from line 1 of glimpse output)*
+2. How many variables?
+  *7 (from line 2 of glimpe output)*
+3. Briefly describe what the output of the `glimpse` function shows us.
+  `glimpse` *lets us take a quick look at the structure of our data, showing how many rows/observations there are and how many variables, as well as what type each variable is and the first few rows of the variable.*
+
+
+## Transform data
+I have made a few changes to the original data. You would read this code out loud something like:   
+
+"Make an object called `tv_data_edit` from the `tv_data` data, *then*   
+make a new variable called decade, *then*   
+update the variable decade so it just has the year (no month or day), *then*  
+make a variable called scifi that take the value "1" if that is one of the listed genres and "0" if it is not, *then*  
+group by the decade variable."  
+
+Everytime you see a "*then*" at the end of a line above, that is where there is a pipe (%>%) in the code below.
+
+```{r, transform1}
+# Fix up the data a bit
+tv_data_edit <- tv_data %>% 
+  mutate(decade = lubridate::floor_date(ymd(date), years(10))) %>% 
+  mutate(decade = as.character(format(decade,"%Y"))) %>% 
+  mutate(scifi = ifelse(grepl("Sci-Fi", genres), "1", "0")) %>% 
+  group_by(decade)
+
+# Check what type of genres we have and how many observations of each type
+# The following uses lots of dplyr functions
+genre_counts <- paste(tv_data_edit$genres ,sep=",",collapse=",") %>% 
+  strsplit(., ",") %>% 
+  unlist() %>% 
+  tibble() %>% 
+  rename(genre = 1) %>% 
+  group_by(genre) %>% 
+  summarise(count = n()) %>% 
+  arrange(desc(count))
+
+genre_counts
+```
+
+### TASK 2
+
+Your turn. Pick one of the genres above and use mutate to make a new indicator variable/dummy variable about whether each observation is your genre or not. I've picked Comedy.
+
+```{r, transform2}
+
+tv_data_edit_2 <- tv_data_edit %>% 
+  mutate(your_genre = ifelse(grepl("Comedy", genres), "1", "0")) # change this line
+
+```
+
+```{r transform3}
+
+# set.seed lets you get the same 'random' number each time you run this code.
+set.seed(31415)
+
+my_genre_data <- tv_data_edit_2 %>% 
+  filter(your_genre == 1) %>% 
+  mutate(decade_count = n()) %>% 
+  sample_n(min(.$decade_count))
+  
+# The last two lines let us pick the same number of observations from each decade
+# You would not usually do this in an ANOVA, 
+# but to illustrate the simplest connection to the linear model properties 
+# for a later example we need a balanced design with equal numbers of observations
+# in each group. In this course we won't talk about experimental design for ANOVA 
+# but be aware that there are some differences in how Sum of Squares are calculated 
+# between balanced and unbalanced designs. I will not be assessing you on this.
+
+```
+
+## Plots of the data
+
+### TASK 3
+Update the titles of these plots with the genre you are considering.
+
+```{r dataplots, fig.height=4}
+
+# Side by side box plots
+my_genre_data %>% 
+  ggplot(aes(x = decade, y = av_rating)) +
+  geom_boxplot() +
+  ggtitle("Boxplots of average rating by decade for comedy TV shows")
+
+# Facetted histograms
+my_genre_data %>% 
+  ggplot(aes(x = av_rating)) +
+  geom_histogram(bins = 20) +
+  facet_wrap(~decade) +
+  ggtitle("Boxplots of average rating by decade for comedy TV shows")
+
+```
+
+## One-way ANOVA on just TV shows of your chosen genre
+
+```{r oneway}
+# ANOVA
+anova1 <- aov(av_rating~decade, data=my_genre_data)
+
+summary(anova1)
+
+```
+
+### TASK 4
+Check you get the same F statistic information from `lm()`.
+Change the function used in the code from above to do so and then view the summary.
+
+```{r lm}
+# Linear Model
+lm1 <- lm(av_rating~decade, data = my_genre_data)
+
+summary(lm1)
+```
+
+## Check model matrix 2 ways
+
+```{r model.matrix}
+
+# 3 dummy variables (one for each decade), i.e. need ~0+ before variable to signal that is what you wnat
+mm1 <- model.matrix(av_rating~0+decade, data=my_genre_data)
+
+# the common way, either with data and formula or just put the anova object in the brackets
+mm2 <- model.matrix(av_rating~decade, data=my_genre_data)
+
+# Compare these two model matrices and see if they are what you expect
+head(mm1, n = 100)
+head(mm2, n = 100)
+
+```
+
+Recall this equation $$y_i = d_{1990}\mu_{1990} +  d_{2000}\mu_{2000} +  d_{2010}\mu_{2010} + \epsilon_i$$
+
+Let's use `mm1` and do this the longer way.
+
+### TASK 5
+Work through the code and comments in the followng chunk.
+
+```{r, predict}
+
+my_means <- my_genre_data %>% 
+  group_by(decade) %>% 
+  mutate(mean = mean(av_rating)) %>% 
+  select(decade, mean) %>% 
+  distinct()
+
+# Step 1: multiply the means by the model matrix (this gives you your predicted values, yhat)
+yhat <- mm1 %*% my_means$mean
+
+# Step 2:  Quickly check that what you calculated is the same as 
+  # the fitted values from the linear model
+head(yhat, n = 50)
+head(lm1$fitted.values, n = 50)
+
+# Step 3: Calculate the residuals
+
+residuals <- my_genre_data$av_rating - yhat
+
+# Step 4:  Check that what you calculated is the same as 
+  # the residuals from the linear model
+head(residuals)
+head(lm1$residuals)
+
+# Step 5: Add residuals and yhat to your my_genre_data as new columns
+my_genre_data$resids <- residuals
+my_genre_data$yhat <- yhat
+
+# Step 6: Plot the residuals against the fitted values 
+my_genre_data %>% 
+  ggplot(aes(x = yhat, y = resids)) +
+  geom_point()
+
+# Step 7: Calculate the variance of the observations in each group
+
+my_genre_data %>% 
+  group_by(decade) %>% 
+  summarise(var_rating = sd(av_rating)^2)
+
+# Step 8: Replace av_rating in the step above with residuals. What do you notice? Why does that makes sense?
+
+my_genre_data %>% 
+  group_by(decade) %>% 
+  summarise(var_rating = sd(resids)^2)
+
+
+```
+Answer to 7 and 8 above: The variance of the observations in each group is the same as the variance of the residuals in each group. This makes sense because the residuals are just the observations minus the group means and variance is invariant with respect to changes in a location, i.e., $Var(X) = Var(X+a)$.
+
+## Plots of the residuals
+
+In practice, you will not do all this residual work by hand.
+R has some handy (if not  pretty) built in plots.
+
+### TASK 6
+
+What do these two plots show?
+
+```{r residplot}
+
+plot(anova1, 1)
+
+plot(anova1, 2)
+
+```
+Plot 1 shows the residuals of the model against the fitted values and plot 2 shows the residuals (standardised) against a theoretical normal distribution of residuals. 
+
+In plot 1, we want to see the residuals in each group centred on 0 and normally distributed around that, as one of our assumptions is that the expected value of the errors is zero, $E[\epsilon_i] = 0$, because the errors are normally distributed with mean 0, $\epsilon \sim N(0, \sigma^2)$.
+
+# Learn more about data transformation with `dplyr` and pipes
+
+`dplyr` is a tidyverse package that you can use to filter data, select certain variables and remove others, make new variables and more.
+
+Pipes (%>%) help you write easy to read code in situations where you want to do something and then something else and then.... A good way to pronounce %>% when reading code is ???then???.
+
+**Work through the tasks in [Chapter 5 of 'R for Data Science' by Hadley Wickham](https://r4ds.had.co.nz/transform.html).** 
+
+```{r, r4ds_ch5}
+
+```
+
